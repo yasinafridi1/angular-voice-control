@@ -1,0 +1,102 @@
+.container{
+    width: 100vw;
+    min-height: 100vw;
+    padding:0px 20px 20px 20px;
+}
+
+.header{
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid blue;
+}
+
+h1{
+    font-size: 30px;
+}
+
+
+h5{
+    font-size: 20px;
+}
+
+button{
+    padding: 10px 40px;
+    background-color: #ffffff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border: 2px solid black;
+    transition: .4s ease-in-out;
+}
+
+button:hover{
+    background-color: rgb(161, 213, 239);
+}
+
+button img{
+    width: 40px;
+    height: 40px;
+}
+
+.command_section{
+    display: flex;
+    justify-content:space-between;
+    align-items: stretch;
+    padding: 40px;
+}
+
+.left{
+    width: 60%;
+    
+}
+
+.command_header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+
+    background-color: rgb(212, 212, 212);
+}
+
+.col{
+    padding: 20px 10px;
+    border: 2px solid rgb(1, 1, 1); 
+}
+.col1{
+    width: 80%;  
+    
+}
+
+.col2{
+    width: 20%;
+}
+
+.text_green{
+    color: rgb(22, 209, 9);
+}
+
+.text_red{
+    color: rgb(197, 0, 0);
+}
+
+
+.right{
+    width: 35%;
+}
+
+.body_row{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.status{
+    font-size: 22px;
+}
+
+h6{
+    font-size: 19px;
+}
