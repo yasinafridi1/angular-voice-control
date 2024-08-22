@@ -170,17 +170,16 @@ private processAndEmitWord(latestWord: string) {
    * @description Emit the latest word immediately.
    */
   private emitTranscript(latestWord: string) {
+    console.log('Recognized', latestWord);
     const matchedOperation = this.findMatchedOperation(latestWord);
     if (matchedOperation) {
       // Emit to toolbar observable
-      console.log('matched operation', latestWord);
       this.voiceToToolbarSubject.next({
-        text: `${latestWord} ---- matched with (${matchedOperation})`,
+        text: matchedOperation,
         status: true,
       });
     } else {
-     // Perform operations before sending with status false
-    this.processAndEmitWord(latestWord);
+     return;
     }
   }
 }
