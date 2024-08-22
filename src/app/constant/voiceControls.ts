@@ -106,7 +106,7 @@ export const operationKeysToolBar = [
   },
   {
     key: 'x',
-    variations: ['ex', 'ax', 'aex', 'axe', 'exe', 'exx', 'exxe', 'exee'],
+    variations: ['ex', 'ax', 'aex', 'axe', 'exe', 'exx', 'exxe', 'exee','x'],
   },
   {
     key: 'y',
@@ -206,6 +206,7 @@ export const operationKeysToolBar = [
       'en',
       'en',
       'en',
+      'in'
     ],
   },
   {
@@ -222,7 +223,7 @@ export const operationKeysToolBar = [
   },
   {
     key: 'r',
-    variations: ['are', 'r', 'ar', 'rai', 'raii', 'raiii', 'raiiii', 'aree'],
+    variations: ['are', 'r', 'or', 'ar', 'rai', 'raii', 'raiii', 'raiiii', 'aree'],
   },
   {
     key: 's',
@@ -230,11 +231,11 @@ export const operationKeysToolBar = [
   },
   {
     key: 't',
-    variations: ['tee', 'te', 'ti', 'tii', 'tiii', 'tiiii', 'teee'],
+    variations: ['tee','tea', 'te', 'ti', 'tii', 'tiii', 'tiiii', 'teee'],
   },
   {
     key: 'u',
-    variations: ['you', 'u', 'yu', 'yuu', 'yuuu', 'yuuuu', 'yuuuuu'],
+    variations: ['you', 'u', 'yu','you'],
   },
   {
     key: 'v',
