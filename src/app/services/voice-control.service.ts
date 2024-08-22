@@ -111,60 +111,33 @@ export class VoiceRecognitionService {
   findMatchedOperation(tempWords: any) {
     const fuse = new Fuse(operationKeysToolBar, this.options);
     const searchResults = fuse.search(tempWords.toLowerCase());
-
+  
+    // Check for direct match
     if (searchResults.length > 0) {
       return searchResults[0].item.key; // Return the key of the best match
     }
-
+  
+    // Check for combinations like 2x, 3x, etc.
+    const numberAndLetterPattern = /^(\d+)([a-zA-Z])$/; // Pattern to match number + letter
+    const match = tempWords.match(numberAndLetterPattern);
+    
+    if (match) {
+      const numberPart = match[1];
+      const letterPart = match[2];
+      const fullPattern = `${numberPart}${letterPart.toLowerCase()}`;
+  
+      // Check if the letter part matches a valid operation key (like x)
+      const operationMatch = operationKeysToolBar.find(item => 
+        item.variations.includes(letterPart.toLowerCase()) || item.key === letterPart.toLowerCase()
+      );
+      
+      if (operationMatch) {
+        return `${numberPart}${operationMatch.key}`;
+      }
+    }
+  
     return null;
   }
-
-
-  /**
- * @description Process the input word and emit segments separately if needed.
- */
-private processAndEmitWord(latestWord: string) {
-  // Check for specific patterns and emit accordingly
-  if (/^\d+[a-zA-Z]$/.test(latestWord)) {
-    // Pattern like "5x", "6y", etc.
-    const numberPart = latestWord.slice(0, latestWord.length - 1);
-    const letterPart = latestWord.slice(-1);
-
-    // Emit number part
-    this.voiceToToolbarSubject.next({
-      text: numberPart,
-      status: false,
-    });
-
-    // Emit letter part
-    this.voiceToToolbarSubject.next({
-      text: letterPart,
-      status: false,
-    });
-  } else if (/^\d+[a-zA-Z]\s?square$/.test(latestWord)) {
-    // Pattern like "5x square", "6y square", etc.
-    const numberPart = latestWord.slice(0, latestWord.length - 7);
-    const letterPart = latestWord.slice(-7, -6);
-
-    // Emit combined part
-    this.voiceToToolbarSubject.next({
-      text: `${numberPart}${letterPart.toLowerCase()}`,
-      status: false,
-    });
-
-    // Emit square icon
-    this.voiceToToolbarSubject.next({
-      text: '²', // Assuming the square is represented by '²' or any other icon
-      status: false,
-    });
-  } else {
-    // Emit the word as-is if no specific pattern is matched
-    this.voiceToToolbarSubject.next({
-      text: latestWord.toLowerCase(),
-      status: false,
-    });
-  }
-}
 
   /**
    * @description Emit the latest word immediately.
