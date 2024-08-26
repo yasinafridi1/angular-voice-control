@@ -12,22 +12,15 @@ export class VoiceRecognitionService {
   recognition: any;
   isStoppedSpeechRecog = false;
   private voiceToToolbarSubject: Subject<any> = new Subject();
-  private interimSubject: Subject<string> = new Subject<string>();
   private lastEmittedWord: string = ''; // Track the last emitted word
+  private numberSequence:(string|number)[]=[]
+  private timer: any; // Declare the timer property
   private options: any = {
     includeScore: true,
     threshold: 0.0, // Adjust this threshold as needed
     keys: ['key', 'variations'],
   };
 
-
-  constructor() {
-    this.interimSubject
-      .pipe(debounceTime(400)) // Wait for 0.5 seconds of silence before processing
-      .subscribe(interimText => {
-        this.emitTranscript(interimText);
-      });
-  }
   /**
    * @description Function to return observable for toolbar operations.
    */
@@ -43,7 +36,6 @@ export class VoiceRecognitionService {
       this.recognition = new webkitSpeechRecognition();
       this.recognition.interimResults = true;
       this.recognition.lang = 'en-US';
-      console.log('SpeechRecognition initialized');
 
       this.recognition.addEventListener('result', (e: any) => {
         const transcript = Array.from(e.results)
@@ -124,7 +116,6 @@ export class VoiceRecognitionService {
     if (match) {
       const numberPart = match[1];
       const letterPart = match[2];
-      const fullPattern = `${numberPart}${letterPart.toLowerCase()}`;
   
       // Check if the letter part matches a valid operation key (like x)
       const operationMatch = operationKeysToolBar.find(item => 
@@ -139,20 +130,52 @@ export class VoiceRecognitionService {
     return null;
   }
 
+
   /**
    * @description Emit the latest word immediately.
    */
-  private emitTranscript(latestWord: string) {
+  private emitTranscript(latestWord: any) {
     console.log('Recognized', latestWord);
-    const matchedOperation = this.findMatchedOperation(latestWord);
-    if (matchedOperation) {
-      // Emit to toolbar observable
-      this.voiceToToolbarSubject.next({
-        text: matchedOperation,
-        status: true,
-      });
-    } else {
-     return;
+    
+    // Clear any existing timer
+    if (this.timer) {
+        clearTimeout(this.timer);
     }
-  }
+
+    if (!isNaN(latestWord)) { // If the latest word is a number
+        this.numberSequence.push(latestWord);
+        
+        // Set a new timer for 1 second
+        this.timer = setTimeout(() => {
+            // Emit the last index value of numberSequence
+            this.voiceToToolbarSubject.next({
+                text: this.numberSequence[this.numberSequence.length - 1],
+                status: true,
+            });
+        }, 1000);
+    } else { // If the latest word is not a number
+        if (this.numberSequence.length) {
+            // Emit the last index value of numberSequence
+            this.voiceToToolbarSubject.next({
+                text: this.numberSequence[this.numberSequence.length - 1],
+                status: true,
+            });
+            // Reset the numberSequence if necessary
+            this.numberSequence = [];
+        }
+
+        // Attempt to match an operation
+        const matchedOperation = this.findMatchedOperation(latestWord);
+        if (matchedOperation) {
+            // Emit to toolbar observable
+            this.voiceToToolbarSubject.next({
+                text: matchedOperation,
+                status: true,
+            });
+        } else {
+            return;
+        }
+    }
+}
+
 }
