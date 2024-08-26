@@ -152,6 +152,7 @@ export class VoiceRecognitionService {
                 text: this.numberSequence[this.numberSequence.length - 1],
                 status: true,
             });
+            this.numberSequence = [];
         }, 1000);
     } else { // If the latest word is not a number
         if (this.numberSequence.length) {
