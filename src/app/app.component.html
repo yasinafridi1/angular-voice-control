@@ -1,53 +1,48 @@
 <div class="container">
   <div class="header">
-      <h1>Voice Control Demo</h1>
-      <button (click)="handleMic()" *ngIf="isMicOn">
-          <img src="../assets/microphone-svgrepo-com.svg" alt="Mic On Icon">
-      </button>
-      <button (click)="handleMic()" *ngIf="!isMicOn">
-        <img src="../assets/mic-off-svgrepo-com.svg" alt="Mic off Icon">
+    <h1>Voice Control Demo</h1>
+    <button (click)="handleMic()" *ngIf="isMicOn">
+      <img src="../assets/microphone-svgrepo-com.svg" alt="Mic On Icon" />
+    </button>
+    <button (click)="handleMic()" *ngIf="!isMicOn">
+      <img src="../assets/mic-off-svgrepo-com.svg" alt="Mic off Icon" />
     </button>
   </div>
 
-  <section class="command_section">
-    <div class="left">
-       <div class="command_header">
-        <div class="col col1">
-          <h5>Applied Command</h5>
-        </div>
-        <div class="col col2">
-          <h5>Matched</h5>
-        </div>
-       </div>
-       <div class="body_row" *ngFor="let item of userCommands">
-        <div class="col col1">
-            <h6>{{item?.text}}</h6>
-        </div>
-        <div [ngClass]="item.status ? 'text_green' : 'text_red'" class="col col2">
-          <p class="status">{{item.status}}</p>
-      </div>
-       </div>
+  <section class="speech_section">
+    <div class="speech_header">
+      <h1>Original Text From Speech Recognition</h1>
     </div>
-
-    <!-- <div class="right">
-      <div class="command_header">
-       <div class="col col2">
-         <h5>S.No</h5>
-       </div>
-       <div class="col col1">
-         <h5>Accepted Commands</h5>
-       </div>
-      </div>
-      <div class="body_row" *ngFor="let item of allowedCommand">
-        <div class="col col2">
-          <p class="status">{{item.serial}}</p>
-        </div>
-        <div class="col col1">
-          <h6>{{item.text}}</h6>
-      </div>
-       </div>
-   </div> -->
+    <div class="speech_body">
+      {{userSpeech}}
+    </div>
   </section>
 
+  <section class="command_section">
+    <div class="left">
+      <div class="command_header">
+        <div class="col">
+          <h5>Matched Command</h5>
+        </div>
+      </div>
+      <div class="body_row" *ngFor="let item of userCommands">
+        <div class="col">
+          <h6>{{ item?.text }}</h6>
+        </div>
+      </div>
+    </div>
 
+    <div class="right">
+      <div class="command_header">
+        <div class="col">
+          <h5>Acceptable Commands</h5>
+        </div>
+      </div>
+      <div class="body_row" *ngFor="let item of allowedCommand">
+        <div class="col">
+          <h6>{{ item.text }}</h6>
+        </div>
+      </div>
+    </div>
+  </section>
 </div>
